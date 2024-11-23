@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  api1:
+    build: ./api
+    container_name: api1
+    ports:
+      - "5001:5000"
+    environment:
+      DB_HOST: "host.docker.internal"
+      DB_PORT: "3306"
+      DB_USER: "root"
+      DB_PASSWORD: ""
+      DB_NAME: "sistema_tarjetas"
+    depends_on:
+      - rabbitmq
+
+  api2:
+    build: ./api
+    container_name: api2
+    ports:
+      - "5002:5000"
+    environment:
+      DB_HOST: "host.docker.internal"
+      DB_PORT: "3306"
+      DB_USER: "root"
+      DB_PASSWORD: ""
+      DB_NAME: "sistema_tarjetas"
+    depends_on:
+      - rabbitmq
+
+  api3:
+    build: ./api
+    container_name: api3
+    ports:
+      - "5003:5000"
+    environment:
+      DB_HOST: "host.docker.internal"
+      DB_PORT: "3306"
+      DB_USER: "root"
+      DB_PASSWORD: ""
+      DB_NAME: "sistema_tarjetas"
+    depends_on:
+      - rabbitmq
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - api1
+      - api2
+      - api3
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
